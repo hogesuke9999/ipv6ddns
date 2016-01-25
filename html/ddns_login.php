@@ -1,6 +1,6 @@
 <html>
 <head>
-<title>DDNS System 02</title>
+<title>DDNS System ユーザ登録</title>
 </head>
 
 <body>
