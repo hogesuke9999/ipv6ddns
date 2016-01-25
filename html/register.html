@@ -1,0 +1,48 @@
+<html>
+<head>
+<title>IPv6 DDNS System ユーザ登録</title>
+</head>
+
+<body>
+<h1>IPv6 DDNS System ユーザ登録</h1>
+ユーザを登録します。希望するユーザ名と認証のためのパスワードを入力してください。
+
+<form method="POST" action="register.php">
+
+<table border="1">
+	<tr>
+		<th>項目名</th>
+		<th>設定内容</th>
+		<th>備考</th>
+	</tr>
+	<tr>
+		<td>ユーザ名</td>
+		<td><input type="text"     name="user"  value=""></td>
+		<td>希望するユーザ名を入力します。<br>
+		    このユーザ名がDNS名となります。<br>
+		    入力できる文字は英文字の小文字と大文字、数字のみです。
+		</td>
+	</tr>
+	<tr>
+		<td>パスワード</td>
+		<td><input type="password" name="pass1" value=""></td>
+		<td>パスワードを入力します。<br>
+		    入力できる文字は英文字の小文字と大文字、数字のみです。
+		</td>
+	</tr>
+	<tr>
+		<td>パスワード(再入力)</td>
+		<td><input type="password" name="pass2" value=""></td>
+		<td>もう一度同じパスワードを入力します</td>
+	</tr>
+</table>
+
+<input type="submit" name="BTN" value="登録">
+
+</form>
+
+<hr>
+<a href="ddns.html"  >トップページへ</a>
+</body>
+
+</html>
