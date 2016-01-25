@@ -44,7 +44,7 @@ if($ERRFLAG == 0) {
 
 ?>
 <hr>
-<a href="ddns.html"  >トップページへ</a>
+<a href="index.html">トップページへ</a>
 </body>
 
 </html>

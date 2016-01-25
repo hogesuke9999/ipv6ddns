@@ -94,7 +94,7 @@ pg_close($db);
 
 ?>
 <hr>
-<a href="ddns.html"  >トップページへ</a>
+<a href="index.html">トップページへ</a>
 </body>
 
 </html>
