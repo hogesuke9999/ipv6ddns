@@ -1,0 +1,7 @@
+<?php
+$DB_HOST = "::1";
+$DB_PORT = "5432";
+$DB_NAME = "ddns";
+$DB_USER = "ddns";
+$DB_PASS = "ddnspass";
+?>

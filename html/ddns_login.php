@@ -1,6 +1,10 @@
 <html>
 <head>
 <title>DDNS System ユーザ登録</title>
+<?php>
+// 設定ファイルの読み込み
+include "/opt/ipv6ddns/etc/ipv6ddns.cnf";
+?>
 </head>
 
 <body>
@@ -60,7 +64,7 @@ if($ERRFLAG == 0) {
 	print "</table>\n";
 
 	print "DBに接続します<br>";
-	$db = pg_connect("host=2001:2e8:65f:0:2:1:0:5 port=5432 dbname=ddns user=ddns password=ddnspass")
+	$db = pg_connect("host=" . $DB_HOST. " port=" . $DB_PORT . " dbname=" . $DB_NAME . " user=" . $DB_USER . " password=" . $DB_PASS)
 	 or die("DBの接続に失敗しました<br>");
 
 	$result = pg_query_params($db, 'select count(*) from ddns where user_name = $1', array($_POST["user"]));

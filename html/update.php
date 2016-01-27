@@ -1,6 +1,10 @@
 <html>
 <head>
 <title>IPv6 DDNS System アドレス更新</title>
+<?php>
+// 設定ファイルの読み込み
+include "/opt/ipv6ddns/etc/ipv6ddns.cnf";
+?>
 </head>
 
 <body>
@@ -52,7 +56,7 @@ if(! preg_match("/^[a-zA-Z0-9]+$/" , $_GET["pass"])) {
 
 // Databaseへの接続
 print "DBに接続します<br>";
-$db = pg_connect("host=2001:2e8:65f:0:2:1:0:5 port=5432 dbname=ddns user=ddns password=ddnspass")
+$db = pg_connect("host=" . $DB_HOST. " port=" . $DB_PORT . " dbname=" . $DB_NAME . " user=" . $DB_USER . " password=" . $DB_PASS)
  or die("DBの接続に失敗しました<br>");
 
 // ユーザ名とパスワードの一致
