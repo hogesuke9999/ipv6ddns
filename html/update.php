@@ -1,7 +1,7 @@
 <html>
 <head>
 <title>IPv6 DDNS System アドレス更新</title>
-<?php>
+<?php
 // 設定ファイルの読み込み
 include "/opt/ipv6ddns/etc/ipv6ddns.cnf";
 ?>
