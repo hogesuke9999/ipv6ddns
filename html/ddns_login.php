@@ -65,11 +65,9 @@ if($ERRFLAG == 0) {
 
 	$result = pg_query_params($db, 'select count(*) from ddns where user_name = $1', array($_POST["user"]));
 	$ret_value_array = pg_fetch_row ($result);
-//	print "ユーザ名" . $_POST["user"] . "は" . $ret_value_array[0] . "です<br>";
 
 	if($ret_value_array[0] == 0) {
 		print "ユーザ名" . $_POST["user"] . "は存在しません(" . $ret_value_array[0] . ")<br>";
-
 		print "ユーザ名" . $_POST["user"] . "を登録します<br>";
 		$query = "insert into ddns (user_name, user_password, create_date, create_address ) values($1 , $2, now(), $3);";
 		$result = pg_query_params($db, $query, array($_POST["user"], $_POST["pass1"], $_SERVER["REMOTE_ADDR"]));
