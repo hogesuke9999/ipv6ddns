@@ -38,7 +38,6 @@ if($ERRFLAG == 0) {
 	print "<a href=update.php";
 	print "?user=" . $_POST["user"];
 	print "&pass=" . $_POST["pass"];
-//	print "&address=" . $_SERVER["REMOTE_ADDR"];
 	print ">アドレス更新</a>";
 };
 

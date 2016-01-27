@@ -1,0 +1,69 @@
+# インストール
+
+## 前提となる環境について
+本スクリプト群は、以下のアプリが動作していることを前提となります。
+* Apache
+* PHP
+* PostgreSQL
+
+## ファイルの設置について
+0. スクリプトファイル等を以下の手順にて設置します。
+パーミッションは適宜修正してください。
+```
+# cd /opt
+# git clone https://github.com/hogesuke9999/ipv6ddns.git
+```
+
+0. Apacheの設定ファイルを設置し、再読み込みさせます。
+```
+# ln -s /opt/ipv6ddns/etc/ipv6ddns.conf /etc/httpd/conf.d/ipv6ddns.conf
+# systemctl restart httpd.service
+```
+0. PostgreSQLの接続設定を以下の手順で行います。
+# cp -ip /var/lib/pgsql/data/pg_hba.conf /var/lib/pgsql/data/pg_hba.conf.org
+cat >> /var/lib/pgsql/data/pg_hba.conf << EOF
+
+# IPv6 local connections:
+host    all             all             (自身のIPアドレス)/128 md5
+EOF
+
+# systemctl restart postgresql.service
+```
+
+0. データベースを以下の手順で作成します。
+```
+-bash-4.2$ createdb ddns
+```
+
+0. Webアプリの接続用ユーザを以下の手順で作成します。
+ddns=# alter role ddns with password 'ddnspass';
+
+0. データベースに接続します。
+```
+-bash-4.2$ pgsql -U ddns -W -H ::1
+```
+
+0. アカウント用テーブルを以下の手順で作成します。
+```
+ddns=# create table account_table (
+       id              serial,
+       user_name       varchar(32) NOT NULL PRIMARY KEY,
+       user_password   varchar(32) NOT NULL,
+       create_date     timestamp NOT NULL,
+       create_address  inet NOT NULL
+       );
+ddns=# GRANT ALL ON account_table TO ddns;
+ddns=# GRANT ALL ON account_table_id_seq TO ddns;
+```
+
+0. マッピング用テーブルを以下の手順で作成します。
+```
+ddns=# create table mapping_table (
+       id              serial,
+       user_name       varchar(32) NOT NULL,
+       create_date     timestamp NOT NULL,
+       mapping_address inet NOT NULL
+       );
+ddns=# GRANT ALL ON mapping_table TO ddns;
+ddns=# GRANT ALL ON mapping_table_id_seq TO ddns;
+```

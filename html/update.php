@@ -85,9 +85,9 @@ if($ERRFLAG == 0) {
 	$query = "insert into mapping_table (user_name, create_date, mapping_address ) values($1 , now(), $2);";
 	$result = pg_query_params($db, $query, array($_GET["user"], $_SERVER["REMOTE_ADDR"]));
 
-	$EXEC_CMD = "sed -e 's/%DOMAINNAME%/" . $_GET["user"] . ".ddns.hard-v6-today.net/' -e 's/%IPADRS%/" . $_SERVER["REMOTE_ADDR"] . "/' /var/www/html/ddns/ddns.txt | nsupdate";
-	print "<p>" . $EXEC_CMD . "</p>\n";
-	echo exec($EXEC_CMD);
+	$exec_cmd = "sed -e 's/%DOMAINNAME%/" . $_GET["user"] . ".ddns.hard-v6-today.net/' -e 's/%IPADRS%/" . $_SERVER["REMOTE_ADDR"] . "/' /opt/ipv6ddns/etc/ddns_template | nsupdate";
+#	print "<p>" . $exec_cmd . "</p>\n";
+	echo exec($exec_cmd);
 };
 
 // Databaseの接続解除
