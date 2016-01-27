@@ -6,42 +6,97 @@
 * PHP
 * PostgreSQL
 * BIND
+* git (オプション)
 
-## ファイルの設置について
+### 前提となる環境の導入
+0. Apacheのインスト-ル
+```
+# yum -y install httpd.x86_64
+# systemctl start httpd.service
+# systemctl enable httpd.service
+ln -s '/usr/lib/systemd/system/httpd.service' '/etc/systemd/system/multi-user.target.wants/httpd.service'
+```
+
+0. PHPのインスト-ル
+```
+# yum -y install php.x86_64 php-pgsql.x86_64
+# systemctl restart httpd.service
+```
+
+0. PostgreSQLのインスト-ル
+```
+# yum -y install postgresql-server.x86_64 postgresql.x86_64
+# postgresql-setup initdb
+Initializing database ... OK
+# systemctl start postgresql.service
+# systemctl enable postgresql.service
+ln -s '/usr/lib/systemd/system/postgresql.service' '/etc/systemd/system/multi-user.target.wants/postgresql.service'
+```
+
+0. BINDのインスト-ル
+```
+# yum -y install bind.x86_64
+```
+
+0. gitのインスト-ル
+```
+# yum -y install git.x86_64
+```
+
+## スクリプトのインストール
 0. スクリプトファイル等を以下の手順にて設置します。
-パーミッションは適宜修正してください。
 ```
 # cd /opt
 # git clone https://github.com/hogesuke9999/ipv6ddns.git
+# chown -R admin. /opt/ipv6ddns
 ```
+
+## 各アプリケーションの設定
 
 0. Apacheの設定ファイルを設置し、再読み込みさせます。
 ```
 # ln -s /opt/ipv6ddns/etc/ipv6ddns.conf /etc/httpd/conf.d/ipv6ddns.conf
 # systemctl restart httpd.service
 ```
+
 0. PostgreSQLの接続設定を以下の手順で行います。
+```
 # cp -ip /var/lib/pgsql/data/pg_hba.conf /var/lib/pgsql/data/pg_hba.conf.org
-cat >> /var/lib/pgsql/data/pg_hba.conf << EOF
-
+# vi /var/lib/pgsql/data/pg_hba.conf
+```
+(変更前)
+```
 # IPv6 local connections:
-host    all             all             (自身のIPアドレス)/128 md5
-EOF
+host    all             all             ::1/128                 ident
+```
+(変更後)
+```
+# IPv6 local connections:
+host    ddns            ddns            ::1/128                 md5
+host    all             all             ::1/128                 ident
+```
 
+0. PostgreSQLの接続設定を以下の手順で反映します。
+```
 # systemctl restart postgresql.service
+```
+
+0. Webアプリの接続用ユーザを以下の手順で作成します。
+```
+$ createuser --no-createdb --no-inherit --pwprompt --no-createrole --no-superuser ddns
+新しいロールのためのパスワード: (ddnspass)
+もう一度入力してください： (ddnspass)
 ```
 
 0. データベースを以下の手順で作成します。
 ```
--bash-4.2$ createdb ddns
+$ createdb --encoding=utf8 --owner=ddns ddns
 ```
-
-0. Webアプリの接続用ユーザを以下の手順で作成します。
-ddns=# alter role ddns with password 'ddnspass';
 
 0. データベースに接続します。
 ```
--bash-4.2$ pgsql -U ddns -W -H ::1
+$ psql -U ddns -h ::1 -W ddns
+ユーザ ddns のパスワード:$ (ddnspass)
 ```
 
 0. アカウント用テーブルを以下の手順で作成します。
