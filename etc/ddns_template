@@ -1,5 +1,5 @@
-prereq yxrrset %DOMAINNAME% IN A
-update delete %DOMAINNAME% IN A
+prereq yxrrset %DOMAINNAME% IN AAAA
+update delete %DOMAINNAME% IN AAAA
 send
-update add %DOMAINNAME% 1200 A %IPADRS%
+update add %DOMAINNAME% 1200 AAAA %IPADRS%
 send
